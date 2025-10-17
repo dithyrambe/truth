@@ -1,0 +1,17 @@
+{
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "**/__pycache__",
+    "**/.pytest_cache"
+  ],
+  "extraPaths": [],
+  "venvPath": ".",
+  "venv": ".venv",
+  "pythonVersion": "3.13",
+  "pythonPlatform": "Linux",
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false,
+  "typeCheckingMode": "basic"
+}
