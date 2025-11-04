@@ -22,19 +22,21 @@ class TruthPoller:
         self.cache_size = cache_size
         self._cache: deque[Status] = deque(maxlen=cache_size)
 
-    async def poll_for_new_statuses(
+    async def poll(
         self,
         account_id: str,
         polling_interval: int = DEFAULT_POLLING_INTERVAL_SECONDS,
-    ) -> Generator[list[Status]]:
+    ) -> AsyncGenerator[Status, None]:
         while True:
             statuses = await self.client.fetch_latest_statuses(account_id=account_id)
             async for status in self.yield_new_statuses(statuses):
-                logger.info(f"{status.created_at}: {status.content}")
+                logger.debug(f"{status.created_at}: {status.content}")
+                yield status
             await asyncio.sleep(polling_interval)
 
     async def yield_new_statuses(
-        self, statuses: list[Status]
+        self,
+        statuses: list[Status],
     ) -> AsyncGenerator[Status, None]:
         for status in sorted(statuses, key=lambda s: s.created_at, reverse=False):
             if self._cache and status.created_at <= self._cache[-1].created_at:
