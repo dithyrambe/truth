@@ -77,4 +77,6 @@ Output MUST be valid JSON for the schema you've been given. Do not include backt
 Validate your JSON against this JSON Schema (do not print it back):
 
 {SentimentResult.model_json_schema()}
+
+Please include your response in a tool call.
 """.strip()

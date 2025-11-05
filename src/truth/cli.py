@@ -1,5 +1,7 @@
 import asyncio
+import json
 
+from loguru import logger
 from pydantic_ai import Agent
 from pydantic_ai.models.bedrock import BedrockConverseModel
 from typer import Option, Typer
@@ -82,6 +84,10 @@ def handle_truth(
                 f"{pendulum.parse(status.created_at).in_tz('Europe/Paris')}: {status.content}"
             )
             typer.echo(result.output.model_dump_json(indent=2))
+            logger.info(f"Usage: {result.usage()}")
+            logger.debug(
+                f"Messages: {json.dumps(json.loads(result.all_messages_json().decode()), indent=2)}"
+            )
 
     asyncio.run(
         _handle_truth(
