@@ -1,12 +1,14 @@
 import asyncio
+
 from pydantic_ai import Agent
 from pydantic_ai.models.bedrock import BedrockConverseModel
+from typer import Option, Typer
+import pendulum
+import typer
+
 from truth.agent import INSTRUCTIONS, SCHEMA_GUARD, SEP, USER_TEMPLATE, SentimentResult
 from truth.client import TruthClient
 from truth.poller import TruthPoller
-from typer import Option, Typer
-import typer
-
 
 TRUMP_ID = "107780257626128497"
 cli = Typer(add_completion=False)
@@ -76,7 +78,9 @@ def handle_truth(
             tweet_content = status.content
             rendered_prompt = USER_TEMPLATE.render(tweet_content=tweet_content)
             result = await agent.run(rendered_prompt)
-            typer.echo(f"{status.created_at}: {status.content}")
+            typer.echo(
+                f"{pendulum.parse(status.created_at).in_tz('Europe/Paris')}: {status.content}"
+            )
             typer.echo(result.output.model_dump_json(indent=2))
 
     asyncio.run(
