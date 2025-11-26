@@ -54,14 +54,6 @@ Tweet:
  
 DONALD J. TRUMP, PRESIDENT OF THE UNITED STATES OF AMERICA</p>
 
-Output:
-{
-    "confidence": 0.9
-    "reasoning": "Trump’s 100 % China tariff announcement likely triggered a negative market reaction, as investors priced in higher global trade tensions, supply-chain disruption, and inflation risk — all pressuring earnings and sentiment across MSCI World constituents."
-    "verdict": "SELL"
-}
-
-Respond ONLY in strict JSON that validates against the provided schema.
 """
 
 USER_TEMPLATE = Template(
@@ -72,11 +64,6 @@ Tweet:
 """.strip()
 )
 
-SCHEMA_GUARD = f"""
-Output MUST be valid JSON for the schema you've been given. Do not include backticks or prose.
-Validate your JSON against this JSON Schema (do not print it back):
-
-{SentimentResult.model_json_schema()}
-
+SCHEMA_GUARD = """
 Please include your response in a tool call.
 """.strip()
